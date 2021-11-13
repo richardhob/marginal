@@ -9,3 +9,4 @@ Usefulness not guarunteed.
 - compile with minimal warmings 
 - call counter
 - arg retreival
+- docs on where func is defined
