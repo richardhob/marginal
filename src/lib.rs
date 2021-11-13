@@ -1,7 +1,14 @@
+
+pub fn parse_string(line: &str) -> i32 {
+    0
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn parse_prototype() {
+        let result = parse_string("int test(void);");
     }
 }
