@@ -1,6 +1,9 @@
 .PHONY: test all build
 
-all: test
+all: test clean
 
 test:
 	cargo test
+
+clean:
+	rm -rf target/
