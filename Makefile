@@ -1,6 +1,6 @@
-.PHONY: test all build
+.PHONY: test all clean
 
-all: test clean
+all: test 
 
 test:
 	cargo test
