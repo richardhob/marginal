@@ -7,24 +7,26 @@ pub struct FunctionPrototype <'a> {
     name: &'a str,
 }
 
-pub fn parse_string(line: &str) -> Result<FunctionPrototype, &'static str> {
+pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
     lazy_static! {
         static ref RE: Regex = Regex::new(r"^([\w\d]+) ([\w\d]+) ?\((.+)\);").unwrap();
     }
     
-    if RE.is_match(line) { 
-        let captures = RE.captures(line).unwrap();
-
-        let rt = captures.get(1).map_or("", |m| m.as_str());
-        let name = captures.get(2).map_or("", |m| m.as_str());
-
-        let result = FunctionPrototype { 
-            return_type:rt,
-            name:name,
-        };
-        return Ok(result); 
+    if false == RE.is_match(line) { 
+        return Err("No match");
     }
-    else { return Err("No match"); }
+
+    let captures = RE.captures(line).unwrap();
+
+    let return_type = captures.get(1).map_or("", |m| m.as_str());
+    let name = captures.get(2).map_or("", |m| m.as_str());
+
+    let result = FunctionPrototype { 
+        return_type:return_type,
+        name:name,
+    };
+
+    return Ok(result); 
 }
 
 #[cfg(test)]
@@ -33,7 +35,7 @@ mod tests {
 
     #[test]
     fn parse_prototype_something() {
-        let result = parse_string("void something(void);").unwrap();
+        let result = get_prototype("void something(void);").unwrap();
 
         assert_eq!(result.return_type, "void");
         assert_eq!(result.name, "something");
@@ -41,7 +43,7 @@ mod tests {
 
     #[test]
     fn parse_prototype_test() {
-        let result = parse_string("int test(void);").unwrap();
+        let result = get_prototype("int test(void);").unwrap();
 
         assert_eq!(result.return_type, "int");
         assert_eq!(result.name, "test");
@@ -49,7 +51,7 @@ mod tests {
 
     #[test]
     fn parse_result_ok() {
-        let result = parse_string("int test(void);");
+        let result = get_prototype("int test(void);");
         assert!(result.is_ok());
     }
 }
