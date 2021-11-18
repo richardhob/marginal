@@ -5,6 +5,7 @@ use regex::Regex;
 pub struct FunctionPrototype <'a> {
     return_type: &'a str,
     name: &'a str,
+    args: [&'a str; 1],
 }
 
 pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
@@ -20,10 +21,12 @@ pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
 
     let return_type = captures.get(1).map_or("", |m| m.as_str());
     let name = captures.get(2).map_or("", |m| m.as_str());
+    let args = captures.get(3).map_or("", |m| m.as_str());
 
     let result = FunctionPrototype { 
         return_type:return_type,
         name:name,
+        args:[args],
     };
 
     return Ok(result); 
