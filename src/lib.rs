@@ -5,7 +5,7 @@ use regex::Regex;
 pub struct FunctionPrototype <'a> {
     return_type: &'a str,
     name: &'a str,
-    args: [&'a str; 1],
+    args: Vec<&'a str>,
 }
 
 pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
@@ -26,7 +26,7 @@ pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
     let result = FunctionPrototype { 
         return_type:return_type,
         name:name,
-        args:[args],
+        args:vec![args],
     };
 
     return Ok(result); 
@@ -37,11 +37,21 @@ mod tests {
     use super::*;
 
     #[test]
+    fn parse_prototype_one() {
+        let result = get_prototype("one two(int three);").unwrap();
+
+        assert_eq!(result.return_type, "one");
+        assert_eq!(result.name, "two");
+        assert_eq!(result.args[0], "int three");
+    }
+
+    #[test]
     fn parse_prototype_something() {
         let result = get_prototype("void something(void);").unwrap();
 
         assert_eq!(result.return_type, "void");
         assert_eq!(result.name, "something");
+        assert_eq!(result.args[0], "void");
     }
 
     #[test]
@@ -50,6 +60,7 @@ mod tests {
 
         assert_eq!(result.return_type, "int");
         assert_eq!(result.name, "test");
+        assert_eq!(result.args[0], "void");
     }
 
     #[test]
