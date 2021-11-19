@@ -10,7 +10,8 @@ pub struct FunctionPrototype <'a> {
 
 pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
     lazy_static! {
-        static ref RE: Regex = Regex::new(r"^([\w\d]+) ([\w\d]+) ?\((.+)\);").unwrap();
+        static ref RE: Regex = Regex::new(r"^([\w\d\*]+) ([\w\d]+) ?\((.+)\);").unwrap();
+        static ref COMMA: Regex = Regex::new(r", ?").unwrap();
     }
     
     if false == RE.is_match(line) { 
@@ -26,7 +27,7 @@ pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
     let result = FunctionPrototype { 
         return_type:return_type,
         name:name,
-        args:vec![args],
+        args:COMMA.split(args).collect()
     };
 
     return Ok(result); 
@@ -35,6 +36,16 @@ pub fn get_prototype(line: &str) -> Result<FunctionPrototype, &'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn parse_prototype_star() {
+        let result = get_prototype("one* two(int * three, int four);").unwrap();
+
+        assert_eq!(result.return_type, "one*");
+        assert_eq!(result.name, "two");
+        assert_eq!(result.args[0], "int * three");
+        assert_eq!(result.args[1], "int four");
+    }
 
     #[test]
     fn parse_prototype_one() {
