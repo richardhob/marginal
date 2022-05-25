@@ -1,9 +1,16 @@
+
+
+PROJECTS:=sed
+BIN:=$(addprefix bin/,$(PROJECTS))
+
 .PHONY: test all clean
 
-all: test 
+all: $(BIN)
 
-test:
-	cargo test --manifest-path=sed/Cargo.toml
+bin/%: %
+	cargo build --manifest-path=$</Cargo.toml
+	mkdir -p bin
+	cp $</target/debug/$< $@
 
 clean:
-	rm -rf ./sed/target/
+	rm -rf ./bin
