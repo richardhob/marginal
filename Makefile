@@ -3,7 +3,7 @@
 all: test 
 
 test:
-	cargo test
+	cargo test --manifest-path=sed/Cargo.toml
 
 clean:
-	rm -rf target/
+	rm -rf ./sed/target/

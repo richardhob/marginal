@@ -1,2 +1,3 @@
-/target
-Cargo.lock
+sed/target
+sed/Cargo.lock
+*.swp

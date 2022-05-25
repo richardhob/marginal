@@ -6,7 +6,7 @@ Usefulness not guarunteed.
 
 - Parse simple functions
 - parse custom structs
-- compile with minimal warmings 
+- compile with minimal warnings 
 - call counter
 - arg retreival
 - docs on where func is defined
