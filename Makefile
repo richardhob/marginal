@@ -8,7 +8,7 @@ BIN:=$(addprefix bin/,$(PROJECTS))
 all: $(BIN)
 
 bin/%: %
-	cargo build --manifest-path=$</Cargo.toml
+	cargo test  --manifest-path=$</Cargo.toml
 	mkdir -p bin
 	cp $</target/debug/$< $@
 
