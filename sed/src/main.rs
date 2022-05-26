@@ -1,6 +1,7 @@
 
 mod one {
-    pub fn something() {
+    pub fn something() -> i32 {
+        1
     }
 }
 

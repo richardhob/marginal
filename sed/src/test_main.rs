@@ -3,7 +3,7 @@ mod tests {
 
     #[test]
     fn test_fail() {
-        something();
-        assert_eq!(1, 0);
+        let i = something();
+        assert_eq!(i, 1);
     }
 }
