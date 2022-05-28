@@ -6,7 +6,7 @@ mod one {
 }
 
 fn main() {
-    println!("Hello, world!");
+    println!("fail");
 }
 
 #[cfg(test)]
