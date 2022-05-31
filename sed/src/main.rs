@@ -1,7 +1,7 @@
 
 use std::env;
 
-mod parse {
+pub mod parse {
     use regex::Regex;
 
     pub fn replace<'a> (input: Vec<&str>, pattern: &str, replacement: &str) -> Vec<String> {
@@ -18,8 +18,13 @@ mod parse {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
+
+    let pattern = &args[1];
+    let separator = pattern.chars().nth(1).unwrap();
+    let split: Vec<&str> = pattern.split(separator).collect();
+
     println!("pass");
+    println!("{}, {}, {}", separator, split[1], split[2]);
 }
 
 #[cfg(test)]
