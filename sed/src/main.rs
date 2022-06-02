@@ -1,32 +1,29 @@
 
 use std::env;
 
-pub mod parse {
-    use regex::Regex;
+mod utils;
 
-    pub fn replace<'a> (input: Vec<&str>, pattern: &str, replacement: &str) -> Vec<String> {
-        let re_pattern = Regex::new(pattern).unwrap();
-        let mut output: Vec<String> = vec![];
-
-        for line in input.iter() {
-            output.push(re_pattern.replace_all(line, replacement).to_string());
-        }
-
-        output
-    }
-}
-
-fn main() {
+fn main() -> Result<(), &'static str> {
     let args: Vec<String> = env::args().collect();
+
+    let check_result = utils::check(&args);
+
+    if check_result.is_err() {
+        return check_result;
+    }
 
     let pattern = &args[1];
     let separator = pattern.chars().nth(1).unwrap();
     let split: Vec<&str> = pattern.split(separator).collect();
 
+    if split.len() != 4 {
+        return Err("Input pattern does not have the expected number of separator characters (expected 3)");
+    }
+
+    utils::replace("This is a test", split[1], split[2]);
+
     println!("pass");
     println!("{}, {}, {}", separator, split[1], split[2]);
-}
 
-#[cfg(test)]
-#[path="./test_main.rs"]
-mod test_main;
+    Ok(())
+}

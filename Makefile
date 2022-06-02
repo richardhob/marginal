@@ -7,7 +7,7 @@ BIN:=$(addprefix bin/,$(PROJECTS))
 
 all: $(BIN)
 
-bin/sed: sed/src/main.rs sed/src/test_main.rs sed/tests/cli.rs
+bin/sed: sed/src/main.rs sed/src/test_utils.rs sed/tests/cli.rs sed/src/utils.rs
 	cargo build --manifest-path=sed/Cargo.toml
 	cargo test --manifest-path=sed/Cargo.toml
 	mkdir -p bin
