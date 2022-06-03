@@ -1,8 +1,10 @@
 
 
-mod cli {
+mod sed {
+    use std::str;
     use std::process::{Command, Stdio};
     use std::io::{Read, Write};
+    use std::fs::canonicalize;
 
     static EXE_PATH: &'static str = "./target/debug/sed";
 
@@ -36,21 +38,31 @@ mod cli {
     }
 
     #[test]
-    fn test_sed_default() {
+    fn test_default() {
         pipe_pattern("fail", "s/fail/pass/g", "pass");
     }
 
     #[test]
-    fn test_sed_single_replace() {
+    fn test_single_replace() {
         pipe_pattern("fail fail fail", "s/fail/pass/", "pass fail fail");
     }
 
     #[test]
-    fn test_sed_bad_separator() {
+    fn test_bad_separator() {
         let out = Command::new(EXE_PATH)
             .arg("'s/fail/'")
             .status()
             .expect("Bad Separator");
         assert!(out.code().unwrap() != 0);
+    }
+
+    #[test]
+    fn test_file_1() {
+        let out = Command::new(EXE_PATH)
+            .arg("s/test/pass/g")
+            .arg(canonicalize("./tests/files/example01.txt").unwrap())
+            .output()
+            .expect("Could not create Process for cli");
+        assert_eq!(str::from_utf8(&out.stdout).unwrap(), "pass");
     }
 }

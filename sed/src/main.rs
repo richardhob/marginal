@@ -1,7 +1,8 @@
 
 use std::env;
-use std::io;
+use std::io::{self, BufReader};
 use std::io::prelude::*;
+use std::fs::File;
 
 mod utils;
 
@@ -28,15 +29,29 @@ fn main() -> Result<(), &'static str> {
         _ => utils::replace
     };
 
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        let actual_line = match line {
-            Err(msg) => panic!("Error reading stdin: {}", msg),
-            Ok(contents) => contents,
-        };
-        let fixed_line = util_func(&actual_line, split[1], split[2]);
-        print!("{}", fixed_line);
-    }
+    // Pick the stream to read
+    if args.len() == 2 {
+        let stdin = io::stdin();
+        for line in stdin.lock().lines() {
+            let actual_line = match line {
+                Err(msg) => panic!("Error reading stdin: {}", msg),
+                Ok(contents) => contents,
+            };
+            let fixed_line = util_func(&actual_line, split[1], split[2]);
+            print!("{}", fixed_line);
+        }
+    } else {
+        let input_file = File::open(&args[2]).unwrap();
+        let buffer = BufReader::new(input_file);
+        for line in buffer.lines() {
+            let actual_line = match line {
+                Err(msg) => panic!("Error reading stdin: {}", msg),
+                Ok(contents) => contents,
+            };
+            let fixed_line = util_func(&actual_line, split[1], split[2]);
+            print!("{}", fixed_line);
+        }
+    };
 
     Ok(())
 }
