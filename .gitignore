@@ -1,4 +1,6 @@
 sed/target
 sed/Cargo.lock
+mkdir/target
+mkdir/Cargo.lock
 *.swp
 bin/
