@@ -1,4 +1,29 @@
 
+mod test_replace_all {
+    use crate::utils;
+
+    #[test]
+    fn default() {
+        let input: &str = "AnotherTest";
+        let output: String = utils::replace_all(input, "Test", "Pass");
+        assert_eq!(output, "AnotherPass");
+    }
+
+    #[test]
+    fn regex1() {
+        let input: &str = "1234567890";
+        let output: String = utils::replace_all(input, "\\d+", "pass");
+        assert_eq!(output, "pass");
+    }
+
+    #[test]
+    fn regex2() {
+        let input: &str = "FailFailFailFailFail";
+        let output: String = utils::replace_all(input, "Fail", "Pass");
+        assert_eq!(output, "PassPassPassPassPass");
+    }
+}
+
 mod test_replace {
     use crate::utils;
 
@@ -19,8 +44,8 @@ mod test_replace {
     #[test]
     fn regex2() {
         let input: &str = "FailFailFailFailFail";
-        let output: String = utils::replace(input, ".+", "pass");
-        assert_eq!(output, "pass");
+        let output: String = utils::replace(input, "Fail", "Pass");
+        assert_eq!(output, "PassFailFailFailFail");
     }
 }
 

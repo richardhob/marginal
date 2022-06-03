@@ -1,5 +1,7 @@
 
 use std::env;
+use std::io;
+use std::io::prelude::*;
 
 mod utils;
 
@@ -20,10 +22,21 @@ fn main() -> Result<(), &'static str> {
         return Err("Input pattern does not have the expected number of separator characters (expected 3)");
     }
 
-    utils::replace("This is a test", split[1], split[2]);
+    // Pick the functionality of regex based on the last characters
+    let util_func = match split[3] {
+        "g" => utils::replace_all,
+        _ => utils::replace
+    };
 
-    println!("pass");
-    println!("{}, {}, {}", separator, split[1], split[2]);
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let actual_line = match line {
+            Err(msg) => panic!("Error reading stdin: {}", msg),
+            Ok(contents) => contents,
+        };
+        let fixed_line = util_func(&actual_line, split[1], split[2]);
+        print!("{}", fixed_line);
+    }
 
     Ok(())
 }

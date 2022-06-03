@@ -1,9 +1,14 @@
 
 use regex::Regex;
 
-pub fn replace(line: &str, pattern: &str, replacement: &str) -> String {
+pub fn replace_all(line: &str, pattern: &str, replacement: &str) -> String {
     let re_pattern = Regex::new(pattern).unwrap();
     re_pattern.replace_all(line, replacement).to_string()
+}
+
+pub fn replace(line: &str, pattern: &str, replacement: &str) -> String {
+    let re_pattern = Regex::new(pattern).unwrap();
+    re_pattern.replace(line, replacement).to_string()
 }
 
 pub fn check(args: &Vec<String>) -> Result<(), &'static str> {
