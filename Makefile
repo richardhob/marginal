@@ -3,27 +3,29 @@
 PROJECTS:=sed mkdir
 BIN:=$(addprefix bin/,$(PROJECTS))
 
-SED_SRC:=$(wildcard sed/src/*.rs) $(wildcard sed/tests/*.rs)
-MKDIR_SRC:=$(wildcard mkdir/src/*.rs) $(wildcard mkdir/tests/*.rs)
+get_src = $(wildcard $(1)/src/*.rs) $(wildcard $(1)/tests/*.rs)
 
+SED_SRC:=$(call get_src,sed)
+MKDIR_SRC:=$(call get_src,mkdir)
 
 .PHONY: test all clean build_sed
 
 all: $(BIN)
 
 bin/sed: $(SED_SRC)
-	cargo build --manifest-path=sed/Cargo.toml
-	cargo test --manifest-path=sed/Cargo.toml
-	mkdir -p bin
-	cp sed/target/debug/sed bin/sed
+	cargo build --manifest-path=$(@F)/Cargo.toml
+	cargo test --manifest-path=$(@F)/Cargo.toml
+	mkdir -p $(@D)
+	cp $(@F)/target/debug/$(@F) $@
 
 bin/mkdir: $(MKDIR_SRC)
-	cargo build --manifest-path=mkdir/Cargo.toml
-	cargo test --manifest-path=mkdir/Cargo.toml
-	mkdir -p bin
-	cp mkdir/target/debug/mkdir bin/mkdir
+	cargo build --manifest-path=$(@F)/Cargo.toml
+	cargo test --manifest-path=$(@F)/Cargo.toml
+	mkdir -p $(@D)
+	cp $(@F)/target/debug/$(@F) $@
 
 
 clean:
-	rm -rf ./bin
+	rm -rf $(BIN)
 	cargo clean --manifest-path=sed/Cargo.toml
+	cargo clean --manifest-path=mkdir/Cargo.toml
