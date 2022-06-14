@@ -31,33 +31,8 @@ fn main() -> Result<(), &'static str> {
     return Ok(());
 }
 
+
 #[cfg(test)]
-mod tests {
-    use super::*;
-    use std::path::Path;
-    use std::fs;
+#[path="./test_mkdir.rs"]
+mod test_mkdir;
 
-    fn do_test(path: &'static str) {
-        let test_path = Path::new(path);
-        mkdir(test_path).unwrap();
-
-        let info = match fs::metadata(test_path) {
-            Ok(meta) => {
-                fs::remove_dir_all(&test_path).unwrap(); 
-                meta},
-            Err(e) => panic!("{}", e)
-        };
-
-        assert!(info.is_dir());
-    }
-
-    #[test]
-    fn test_make_dir1() {
-        do_test("./some/test/dir");
-    }
-
-    #[test]
-    fn test_make_dir2() {
-        do_test("./some_test_dir");
-    }
-}
