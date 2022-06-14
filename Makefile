@@ -17,17 +17,11 @@ bin/sed: $(SED_SRC)
 	mkdir -p bin
 	cp sed/target/debug/sed bin/sed
 
-bin/mkdir: $(SED_SRC)
+bin/mkdir: $(MKDIR_SRC)
 	cargo build --manifest-path=mkdir/Cargo.toml
 	cargo test --manifest-path=mkdir/Cargo.toml
 	mkdir -p bin
 	cp mkdir/target/debug/mkdir bin/mkdir
-
-bin/%: %
-	cargo build --manifest-path=$</Cargo.toml
-	cargo test --manifest-path=$</Cargo.toml
-	mkdir -p bin
-	cp $</target/debug/$< $@
 
 
 clean:
