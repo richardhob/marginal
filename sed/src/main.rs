@@ -38,7 +38,7 @@ fn main() -> Result<(), &'static str> {
                 Ok(contents) => contents,
             };
             let fixed_line = util_func(&actual_line, split[1], split[2]);
-            print!("{}", fixed_line);
+            println!("{}", fixed_line);
         }
     } else {
         let input_file = File::open(&args[2]).unwrap();
@@ -49,7 +49,7 @@ fn main() -> Result<(), &'static str> {
                 Ok(contents) => contents,
             };
             let fixed_line = util_func(&actual_line, split[1], split[2]);
-            print!("{}", fixed_line);
+            println!("{}", fixed_line);
         }
     };
 

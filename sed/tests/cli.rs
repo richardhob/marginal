@@ -39,12 +39,17 @@ mod sed {
 
     #[test]
     fn test_default() {
-        pipe_pattern("fail", "s/fail/pass/g", "pass");
+        pipe_pattern("fail", "s/fail/pass/g", "pass\n");
+    }
+
+    #[test]
+    fn test_word_char() {
+        pipe_pattern("fail", "s/\\w+/pass/g", "pass\n");
     }
 
     #[test]
     fn test_single_replace() {
-        pipe_pattern("fail fail fail", "s/fail/pass/", "pass fail fail");
+        pipe_pattern("fail fail fail", "s/fail/pass/", "pass fail fail\n");
     }
 
     #[test]
@@ -63,6 +68,6 @@ mod sed {
             .arg(canonicalize("./tests/files/example01.txt").unwrap())
             .output()
             .expect("Could not create Process for cli");
-        assert_eq!(str::from_utf8(&out.stdout).unwrap(), "pass");
+        assert_eq!(str::from_utf8(&out.stdout).unwrap(), "pass\n\n");
     }
 }
